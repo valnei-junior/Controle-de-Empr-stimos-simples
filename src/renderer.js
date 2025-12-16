@@ -1,3 +1,12 @@
+/**
+ * CONTROLE DE EMPRÉSTIMOS v2.0
+ * Desenvolvido por: Valnei Almeida de Oliveira Junior
+ * Data: Dezembro 2025
+ * 
+ * Aplicação para gerenciamento de empréstimos de items pessoais
+ * com suporte a filtros avançados, agrupamento alfabético e exportação PDF
+ */
+
 const form = document.getElementById('loan-form');
 const loanList = document.getElementById('loan-list');
 const pendingCountEl = document.getElementById('pending-count');
@@ -396,3 +405,7 @@ returnConfirmBtn.addEventListener('click', async () => {
 refreshProductCode();
 refreshLoans();
 switchView('register');
+
+// Easter egg 🎉
+console.log('%c🔐 Desenvolvido por Valnei Almeida de Oliveira Junior', 'color: #2563eb; font-size: 14px; font-weight: bold; text-shadow: 0 0 10px rgba(37, 99, 235, 0.5)');
+console.log('%cControle de Empréstimos v2.0 - Dezembro 2025', 'color: #6b7280; font-size: 12px');
