@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Controle de Empréstimos</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-theme="light">
+    <div class="app-shell">
+      <header>
+        <div>
+          <h1>Controle de Empréstimos</h1>
+          <p class="muted">Gerencie livros, jogos e objetos emprestados.</p>
+        </div>
+        <div class="tab-control">
+          <button type="button" data-view="overview" class="active">Empréstimos</button>
+          <button type="button" data-view="settings">Configurações</button>
+        </div>
+      </header>
+
+      <section class="view view-overview" data-view-panel="overview">
+        <form id="loan-form">
+          <label for="item-name">Item emprestado</label>
+          <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
+
+          <label for="borrower-name">Nome da pessoa</label>
+          <input id="borrower-name" name="borrower" type="text" placeholder="Maria, José" required />
+
+          <label for="loan-date">Data do empréstimo</label>
+          <input id="loan-date" name="date" type="date" />
+
+          <button type="submit">Registrar empréstimo</button>
+        </form>
+
+        <section class="status-bar">
+          <div class="status-text">
+            <span>Itens pendentes:</span>
+            <strong id="pending-count">0</strong>
+            <span class="filter-label" id="filter-label">Exibindo tudo</span>
+          </div>
+          <div class="status-actions">
+            <button id="clear-button" type="button">Limpar histórico</button>
+            <button id="export-button" type="button">Exportar PDF</button>
+          </div>
+        </section>
+
+        <section class="list-panel">
+          <ul id="loan-list"></ul>
+        </section>
+      </section>
+
+      <section class="view view-settings" data-view-panel="settings" hidden>
+        <div class="list-panel">
+          <h2>Configurações</h2>
+          <p class="muted">Ajuste tema e preferências da aplicação.</p>
+          <div class="theme-control">
+            <button id="theme-toggle" type="button">Modo escuro</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="./renderer.js" type="module"></script>
+  </body>
+</html>
