@@ -14,13 +14,23 @@
           <p class="muted">Gerencie livros, jogos e objetos emprestados.</p>
         </div>
         <div class="tab-control">
-          <button type="button" data-view="overview" class="active">Empréstimos</button>
+          <button type="button" data-view="register" class="active">Registrar</button>
+          <button type="button" data-view="overview">Empréstimos</button>
           <button type="button" data-view="settings">Configurações</button>
         </div>
       </header>
 
-      <section class="view view-overview" data-view-panel="overview">
+      <section class="view view-register" data-view-panel="register">
         <form id="loan-form">
+          <label for="item-type">Tipo do item</label>
+          <select id="item-type" name="type" required>
+            <option value="Livro">Livro</option>
+            <option value="Jogo">Jogo</option>
+            <option value="Filme">Filme</option>
+            <option value="Equipamento">Equipamento</option>
+            <option value="Outro">Outro</option>
+          </select>
+
           <label for="item-name">Item emprestado</label>
           <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
 
@@ -30,8 +40,45 @@
           <label for="loan-date">Data do empréstimo</label>
           <input id="loan-date" name="date" type="date" />
 
+          <label for="product-code">Código do item</label>
+          <input id="product-code" name="productCode" type="text" readonly value="" />
+
           <button type="submit">Registrar empréstimo</button>
         </form>
+      </section>
+
+      <section class="view view-overview" data-view-panel="overview" hidden>
+        <section class="filters-panel">
+          <div class="filter-group">
+            <label>Status:</label>
+            <label class="checkbox">
+              <input type="radio" name="status-filter" value="all" checked /> Todos
+            </label>
+            <label class="checkbox">
+              <input type="radio" name="status-filter" value="pending" /> Pendentes
+            </label>
+            <label class="checkbox">
+              <input type="radio" name="status-filter" value="returned" /> Devolvidos
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <label for="type-filter">Tipo de item:</label>
+            <select id="type-filter">
+              <option value="">Todos os tipos</option>
+              <option value="Livro">Livro</option>
+              <option value="Jogo">Jogo</option>
+              <option value="Filme">Filme</option>
+              <option value="Equipamento">Equipamento</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="borrower-filter">Pessoa:</label>
+            <input id="borrower-filter" type="text" placeholder="Filtrar por nome..." />
+          </div>
+        </section>
 
         <section class="status-bar">
           <div class="status-text">
@@ -50,6 +97,33 @@
         </section>
       </section>
 
+      <!-- <section class="view view-register" data-view-panel="register" hidden>
+        <form id="loan-form">
+          <label for="item-type">Tipo do item</label>
+          <select id="item-type" name="type" required>
+            <option value="Livro">Livro</option>
+            <option value="Jogo">Jogo</option>
+            <option value="Filme">Filme</option>
+            <option value="Equipamento">Equipamento</option>
+            <option value="Outro">Outro</option>
+          </select>
+
+          <label for="item-name">Item emprestado</label>
+          <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
+
+          <label for="borrower-name">Nome da pessoa</label>
+          <input id="borrower-name" name="borrower" type="text" placeholder="Maria, José" required />
+
+          <label for="loan-date">Data do empréstimo</label>
+          <input id="loan-date" name="date" type="date" />
+
+          <label for="product-code">Código do item</label>
+          <input id="product-code" name="productCode" type="text" readonly value="" />
+
+          <button type="submit">Registrar empréstimo</button> -->
+        </form>
+      </section>
+
       <section class="view view-settings" data-view-panel="settings" hidden>
         <div class="list-panel">
           <h2>Configurações</h2>
@@ -59,6 +133,18 @@
           </div>
         </div>
       </section>
+
+      <div id="return-modal" class="modal" hidden>
+        <div class="modal-content">
+          <h3>Data da devolução</h3>
+          <label for="return-date">Selecione a data:</label>
+          <input id="return-date" type="date" />
+          <div class="modal-actions">
+            <button id="return-cancel" type="button">Cancelar</button>
+            <button id="return-confirm" type="button">Confirmar</button>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="./renderer.js" type="module"></script>
   </body>
