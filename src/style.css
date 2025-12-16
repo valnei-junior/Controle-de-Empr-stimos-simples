@@ -136,11 +136,6 @@ form select {
   color: var(--text);
 }
 
-form input[readonly] {
-  background: #f8fafc;
-  color: var(--muted);
-}
-
 #loan-form button[type='submit'] {
   width: 100%;
   margin-top: 8px;
