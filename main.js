@@ -6,6 +6,8 @@ const storeFile = () => path.join(app.getPath('userData'), 'loans.json');
 
 const defaults = { loans: [], theme: 'light' };
 
+// Lê o arquivo com os empréstimos e o tema.
+// Retorna o estado padrão se não existir.
 function readStore() {
   try {
     const raw = fs.readFileSync(storeFile(), 'utf8');
@@ -15,6 +17,7 @@ function readStore() {
   }
 }
 
+// Salva os dados enviados no disco do usuário.
 function writeStore(data) {
   fs.mkdirSync(path.dirname(storeFile()), { recursive: true });
   fs.writeFileSync(storeFile(), JSON.stringify(data, null, 2));
@@ -22,6 +25,7 @@ function writeStore(data) {
 
 let mainWindow;
 
+// Cria a janela principal e carrega a tela.
 function createWindow() {
   const win = new BrowserWindow({
     width: 960,
@@ -39,12 +43,14 @@ function createWindow() {
   return win;
 }
 
+// Envia mensagens para a tela via IPC.
 function broadcast(channel, payload) {
   if (mainWindow && mainWindow.webContents) {
     mainWindow.webContents.send(channel, payload);
   }
 }
 
+// Monta o menu com atalhos para controlar os empréstimos.
 function buildMenu() {
   const template = [
     {

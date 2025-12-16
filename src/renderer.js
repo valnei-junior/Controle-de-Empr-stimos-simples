@@ -14,18 +14,21 @@ const exportButton = document.getElementById('export-button');
 let currentFilter = 'all';
 let currentTheme = 'light';
 
+// Muda o visual da tela para o tema salvo (claro/escuro).
 const applyTheme = (theme) => {
   currentTheme = theme;
   document.body.dataset.theme = theme;
   themeToggle.textContent = theme === 'dark' ? 'Modo claro' : 'Modo escuro';
 };
 
+// Deixa a data com o jeito usado aqui no Brasil.
 const formatDate = (value) => {
   if (!value) return '-';
   const date = new Date(value);
   return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
+// Refaz a lista de empréstimos e adiciona os botões de devolução.
 const renderLoans = (loans) => {
   loanList.innerHTML = '';
   if (!loans.length) {
@@ -76,6 +79,7 @@ const renderLoans = (loans) => {
   });
 };
 
+// Puxa os dados do Electron e atualiza o filtro e a lista.
 const refreshLoans = async (filter = 'all') => {
   const store = await window.loanAPI.loadStore();
   const loans = store.loans || [];
@@ -89,6 +93,7 @@ const refreshLoans = async (filter = 'all') => {
   currentFilter = filter;
 };
 
+// Controla o envio do formulário e limpa os campos.
 const handleFormSubmit = async (event) => {
   event.preventDefault();
   const payload = {
@@ -105,6 +110,7 @@ const handleFormSubmit = async (event) => {
   refreshLoans(currentFilter);
 };
 
+// Pede confirmação antes de apagar tudo.
 const handleClear = async () => {
   const confirmed = window.confirm('Isso irá apagar todo o histórico de empréstimos. Deseja continuar?');
   if (!confirmed) return;
@@ -115,6 +121,7 @@ const handleClear = async () => {
 form.addEventListener('submit', handleFormSubmit);
 clearButton.addEventListener('click', handleClear);
 
+// Mostra só a aba escolhida.
 const switchView = (viewId) => {
   viewPanels.forEach((panel) => {
     panel.hidden = panel.dataset.viewPanel !== viewId;
@@ -134,11 +141,13 @@ themeToggle.addEventListener('click', async () => {
   applyTheme(next);
 });
 
+// Esconde tudo menos a lista para o PDF mostrar só os itens.
 const enableExportMode = () => {
   document.body.dataset.exporting = 'list-only';
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 };
 
+// Volta a tela ao normal depois do PDF.
 const disableExportMode = () => {
   delete document.body.dataset.exporting;
 };

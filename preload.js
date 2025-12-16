@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// Cria uma ponte segura para a tela chamar funções do main.
 contextBridge.exposeInMainWorld('loanAPI', {
   loadStore: () => ipcRenderer.invoke('store:get'),
   addLoan: (payload) => ipcRenderer.invoke('store:add', payload),
