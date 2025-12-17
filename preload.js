@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('loanAPI', {
   setTheme: (theme) => ipcRenderer.invoke('store:setTheme', theme),
   getTheme: () => ipcRenderer.invoke('store:getTheme'),
   exportPdf: () => ipcRenderer.invoke('export:pdf'),
+  sendSms: (payload) => ipcRenderer.invoke('sms:send', payload),
   onMenu: (channel, callback) => {
     const listener = (_event, data) => callback(data);
     ipcRenderer.on(channel, listener);

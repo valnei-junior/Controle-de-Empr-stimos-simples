@@ -94,6 +94,12 @@ A aplicação abrirá em uma janela desktop do Electron.
 | **Tipo do item** | Select | ✅ Sim | Livro, Jogo, Filme, Equipamento, Outro |
 | **Item emprestado** | Texto | ✅ Sim | Nome do item (ex: "1984", "PlayStation 5") |
 | **Nome da pessoa** | Texto | ✅ Sim | Nome de quem pegou emprestado |
+| **Telefone** | Texto | ❌ Não | Contato opcional da pessoa emprestada |
+| **Data de nascimento** | Data | ❌ Não | Ajuda a identificar o registro quando necessário |
+| **CEP** | Texto | ✅ Sim | Campo obrigatório com máscara/números e validação no formato 00000-000; dispara busca no ViaCEP para sugerir o logradouro e o bairro |
+| **Endereço** | Texto | ✅ Sim | Localização obrigatória para registro completo |
+| **Bairro** | Texto | ❌ Não | Preenchido automaticamente pela consulta ao CEP, mas pode ser editado manualmente |
+| **Número** | Texto | ❌ Não | Número do imóvel; insira manualmente para completar o endereço |
 | **Data do empréstimo** | Data | ❌ Não | Se não preenchida, usa a data atual |
 | **Código do item** | Texto | ❌ Não | Gerado automaticamente, somente leitura |
 
@@ -101,6 +107,8 @@ A aplicação abrirá em uma janela desktop do Electron.
 
 1. Preencha os campos obrigatórios
 2. O código é gerado automaticamente quando você seleciona o tipo
+2.1. Se já houver registro ativo para o mesmo item e pessoa, aparece um alerta; confirmar continua registrando o novo empréstimo e o relaciona ao cadastro anterior.
+2.1. Após informar um CEP válido o app consulta o ViaCEP para sugerir logradouro e bairro; confirme ou ajuste o resultado antes de continuar
 3. Clique em "Registrar empréstimo"
 4. O empréstimo é salvo e a lista é atualizada
 5. Os campos são limpos para o próximo registro
@@ -111,6 +119,8 @@ A aplicação abrirá em uma janela desktop do Electron.
 Tipo: Livro
 Item: O Senhor dos Anéis
 Pessoa: Maria
+CEP: 01001-000
+Endereço: Rua das Flores, 220
 Data: 15/12/2025
 Código: LIV-4829-A7K2
 ```
@@ -119,6 +129,8 @@ Código: LIV-4829-A7K2
 Tipo: Equipamento
 Item: Projetor LG
 Pessoa: João
+CEP: 20020-050
+Endereço: Rua Central, 500
 Data: (deixar vazio = 16/12/2025)
 Código: EQU-5104-M9X1
 ```
@@ -327,14 +339,26 @@ returnModal                // Abre/fecha modal de devolução
 ### Caso de Uso 1: Registrar um Empréstimo
 
 1. Na aba "Registrar", preencha:
-   - Tipo: "Livro"
-   - Item: "Clean Code"
-   - Pessoa: "Paulo"
+  - Tipo: "Livro"
+  - Item: "Clean Code"
+  - Pessoa: "Paulo"
+   - CEP: 01001-000 (formato 00000-000 com máscara ativa; o sistema buscará o endereço automaticamente)
+   - Endereço: Rua das Flores, 220
+   - Bairro: Jardim das Flores (ajuste se necessário)
+   - Número: 220
+   - Telefone: (11) 98877-6655 (opcional)
+  - Ao digitar um telefone que já existe na base, o sistema preenche o nome, endereço, bairro e número automaticamente e exibe um alerta sobre os itens vinculados a esse contato.
+   - Data de nascimento: 17/03/1992 (opcional)
    - Data: 16/12/2025
 
 2. Clique em "Registrar empréstimo"
 
 3. O item aparecerá na aba "Empréstimos" sob a letra "C" (Clean Code)
+  - CEP: 20020-050
+  - Endereço: Rua Central, 500
+  - Bairro: Centro
+  - Número: 500
+  - Botão “Enviar mensagem” copia um lembrete em português para ser colado no WhatsApp/Telegram (visível quando há telefone registrado)
 
 ### Caso de Uso 2: Marcar Devolução com Data Específica
 
@@ -354,7 +378,7 @@ returnModal                // Abre/fecha modal de devolução
 
 2. No painel de filtros, campos "Pessoa"
 
-3. Digite o nome (ex: "Maria")
+3. Digite o nome ou telefone (ex: "Maria" ou "988776655")
 
 4. A lista atualiza em tempo real mostrando apenas empréstimos para Maria
 
@@ -369,6 +393,8 @@ returnModal                // Abre/fecha modal de devolução
 4. Um PDF será gerado com a lista visível
 
 5. Salve no local desejado
+
+6. O PDF mantém telefone, data de nascimento, endereço, bairro, número e CEP do tomador exibidos na lista
 
 ### Caso de Uso 5: Alternar Tema
 
@@ -398,6 +424,14 @@ Os dados são armazenados em JSON no seguinte formato:
       "type": "Livro",              // Tipo do item
       "loanDate": "2025-12-15",     // Data empréstimo (ISO)
       "createdAt": "2025-12-15",    // Data criação (ISO)
+      "borrowerPhone": "(11) 91234-5678", // Contato opcional
+      "borrowerBirthdate": "1990-05-09",  // Data de nascimento (ISO)
+      "borrowerAddress": "Rua das Flores, 220",
+      "borrowerCep": "01001-000",
+      "borrowerNeighborhood": "Centro",
+      "borrowerNumber": "220",
+      "relatedLoanId": "1234500000",
+      "relatedProductCode": "LIV-9876-Z9A2",
       "productCode": "LIV-1234-A5X2", // Código gerado
       "returned": false,            // Status
       "returnedAt": null            // Data devolução (ISO ou null)
@@ -409,6 +443,10 @@ Os dados são armazenados em JSON no seguinte formato:
       "type": "Equipamento",
       "loanDate": "2025-12-10",
       "createdAt": "2025-12-10",
+      "borrowerPhone": "(21) 99876-5432",
+      "borrowerBirthdate": "1986-04-02",
+      "borrowerAddress": "Rua Central, 500",
+      "borrowerCep": "20020-050",
       "productCode": "EQU-5104-K8M1",
       "returned": true,
       "returnedAt": "2025-12-16"
@@ -481,6 +519,26 @@ R: Atualmente, você precisa marcar como devolvido e registrar novamente. Uma fe
 
 **P: Os dados são sincronizados entre dispositivos?**
 R: Não, os dados são armazenados localmente no seu computador.
+
+---
+
+## Integração SMS (Twilio)
+
+1. Crie uma conta gratuita no Twilio e guarde o `Account SID`, `Auth Token` e um número de telefone autorizado (o número enviado pela Twilio).
+2. No diretório `backend/` (fora deste projeto) construa o servidor Express com o endpoint abaixo:
+   ```js
+   app.post('/send-sms', async (req, res) => {
+     const { to, message } = req.body;
+     const sms = await client.messages.create({
+       from: process.env.TWILIO_PHONE,
+       to,
+       body: message,
+     });
+     res.json({ success: true, sid: sms.sid });
+   });
+   ```
+3. Configure `.env` com `TWILIO_SID`, `TWILIO_TOKEN` e `TWILIO_PHONE`, rode `node index.js` e deixe `backend` escutando a porta 3000 (ou outra porta e defina `SMS_BACKEND_URL`).
+4. No Electron, o botão “Enviar mensagem” chama o backend via o canal seguro `window.loanAPI.sendSms`; o texto é enviado direto ao Twilio, e a UI alerta se houver falha (copiando o texto para envio manual).
 
 **P: Posso usar o app em modo offline?**
 R: Sim, o app funciona completamente offline.

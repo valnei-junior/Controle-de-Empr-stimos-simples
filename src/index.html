@@ -24,28 +24,85 @@
 
       <section class="view view-register" data-view-panel="register">
         <form id="loan-form">
-          <label for="item-type">Tipo do item</label>
-          <select id="item-type" name="type" required>
-            <option value="Livro">Livro</option>
-            <option value="Jogo">Jogo</option>
-            <option value="Filme">Filme</option>
-            <option value="Equipamento">Equipamento</option>
-            <option value="Outro">Outro</option>
-          </select>
-
-          <label for="item-name">Item emprestado</label>
-          <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
-
-          <label for="borrower-name">Nome da pessoa</label>
-          <input id="borrower-name" name="borrower" type="text" placeholder="Maria, José" required />
-
-          <label for="loan-date">Data do empréstimo</label>
-          <input id="loan-date" name="date" type="date" required />
-
-          <label for="product-code">Código do item</label>
-          <input id="product-code" name="productCode" type="text" value="" required />
-
-          <button type="submit">Registrar empréstimo</button>
+          <p class="form-subtitle">Reúna todos os dados do item e do tomador antes de confirmar o empréstimo.</p>
+          <div class="form-grid">
+            <div class="form-card">
+              <div class="card-heading">
+                <strong>Dados do item</strong>
+                <span>Tipo, código e data</span>
+              </div>
+              <div class="field-group">
+                <label for="item-type">Tipo do item</label>
+                <select id="item-type" name="type" required>
+                  <option value="Livro">Livro</option>
+                  <option value="Jogo">Jogo</option>
+                  <option value="Filme">Filme</option>
+                  <option value="Equipamento">Equipamento</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="item-name">Item emprestado</label>
+                <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
+              </div>
+              <div class="field-group">
+                <label for="loan-date">Data do empréstimo</label>
+                <input id="loan-date" name="date" type="date" required />
+              </div>
+              <div class="field-group">
+                <label for="product-code">Código do item</label>
+                <input id="product-code" name="productCode" type="text" value="" required />
+              </div>
+            </div>
+            <div class="form-card form-card--borrower">
+              <div class="card-heading">
+                <strong>Dados do tomador</strong>
+                <span>Contato e localização</span>
+              </div>
+              <div class="field-group">
+                <label for="borrower-name">Nome da pessoa</label>
+                <input id="borrower-name" name="borrower" type="text" placeholder="Maria, José" required />
+              </div>
+              <div class="field-row">
+                <div class="field-group">
+                  <label for="borrower-phone">Telefone</label>
+                  <input id="borrower-phone" name="phone" type="tel" placeholder="(12) 91234-5678" />
+                </div>
+                <div class="field-group">
+                  <label for="borrower-birthdate">Data de nascimento</label>
+                  <input id="borrower-birthdate" name="birthdate" type="date" />
+                </div>
+              </div>
+              <div class="field-group">
+                <label for="borrower-cep">CEP</label>
+                <input
+                  id="borrower-cep"
+                  name="cep"
+                  type="text"
+                  inputmode="numeric"
+                  pattern="\d{5}-\d{3}"
+                  maxlength="9"
+                  placeholder="01234-567"
+                  required
+                />
+              </div>
+              <div class="field-group">
+                <label for="borrower-address">Endereço</label>
+                <input id="borrower-address" name="address" type="text" placeholder="Rua Exemplo, 123" required />
+              </div>
+              <div class="field-group">
+                <label for="borrower-neighborhood">Bairro</label>
+                <input id="borrower-neighborhood" name="neighborhood" type="text" placeholder="Centro" />
+              </div>
+              <div class="field-group">
+                <label for="borrower-number">Número</label>
+                <input id="borrower-number" name="number" type="text" placeholder="123" />
+              </div>
+            </div>
+          </div>
+          <div class="submit-row">
+            <button type="submit">Registrar empréstimo</button>
+          </div>
         </form>
       </section>
 
@@ -97,33 +154,6 @@
         <section class="list-panel">
           <ul id="loan-list"></ul>
         </section>
-      </section>
-
-      <!-- <section class="view view-register" data-view-panel="register" hidden>
-        <form id="loan-form">
-          <label for="item-type">Tipo do item</label>
-          <select id="item-type" name="type" required>
-            <option value="Livro">Livro</option>
-            <option value="Jogo">Jogo</option>
-            <option value="Filme">Filme</option>
-            <option value="Equipamento">Equipamento</option>
-            <option value="Outro">Outro</option>
-          </select>
-
-          <label for="item-name">Item emprestado</label>
-          <input id="item-name" name="item" type="text" placeholder="Livro, console, etc." required />
-
-          <label for="borrower-name">Nome da pessoa</label>
-          <input id="borrower-name" name="borrower" type="text" placeholder="Maria, José" required />
-
-          <label for="loan-date">Data do empréstimo</label>
-          <input id="loan-date" name="date" type="date" />
-
-          <label for="product-code">Código do item</label>
-          <input id="product-code" name="productCode" type="text" readonly value="" />
-
-          <button type="submit">Registrar empréstimo</button> -->
-        </form>
       </section>
 
       <section class="view view-settings" data-view-panel="settings" hidden>

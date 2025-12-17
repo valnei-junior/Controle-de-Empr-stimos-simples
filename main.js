@@ -3,6 +3,7 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fs = require('fs');
 
 const storeFile = () => path.join(app.getPath('userData'), 'loans.json');
+const smsBackendUrl = process.env.SMS_BACKEND_URL || 'http://localhost:3000';
 
 const defaults = { loans: [], theme: 'light' };
 
@@ -157,4 +158,21 @@ ipcMain.handle('export:pdf', async () => {
   } catch (error) {
     return { success: false, message: error.message };
   }
+});
+
+ipcMain.handle('sms:send', async (_event, payload) => {
+  if (!payload || !payload.to || !payload.message) {
+    throw new Error('Telefone e mensagem são obrigatórios para enviar o SMS.');
+  }
+  const endpoint = new URL('/send-sms', smsBackendUrl).toString();
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ to: payload.to, message: payload.message }),
+  });
+  if (!response.ok) {
+    const reason = await response.text();
+    throw new Error(reason || `Falha ao enviar SMS (HTTP ${response.status}).`);
+  }
+  return response.json();
 });
