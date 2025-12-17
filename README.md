@@ -36,7 +36,7 @@ A aba “Empréstimos” oferece um botão “Enviar mensagem” que envia um le
 
 Este repositório já inclui uma pasta `backend/` com o servidor Express/Twilio e um `.env.example`. Para começar:
 
-1. Abra `backend/.env.example`, copie como `.env` e preencha `TWILIO_SID`, `TWILIO_TOKEN`, `TWILIO_PHONE` e `PORT` se quiser alterar.
+1. Abra `backend/.env.example`, copie como `.env` e preencha `TWILIO_SID`, `TWILIO_TOKEN`, `TWILIO_PHONE` e `PORT` se quiser alterar. O arquivo já vem com `+55 84 99857-1071` como exemplo de telefone brasileiro.
 2. Rode `npm install` dentro de `backend/` e depois `npm start` para deixar o backend escutando (por padrão porta 3000).
 3. O Electron se comunica com esse serviço pelo `SMS_BACKEND_URL` (defaults para `http://localhost:3000`), então mantenha o backend ativo enquanto enviar mensagens.
 

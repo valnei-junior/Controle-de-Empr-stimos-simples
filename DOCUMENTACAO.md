@@ -537,8 +537,9 @@ R: Não, os dados são armazenados localmente no seu computador.
      res.json({ success: true, sid: sms.sid });
    });
    ```
-3. Configure `.env` com `TWILIO_SID`, `TWILIO_TOKEN` e `TWILIO_PHONE`, rode `node index.js` e deixe `backend` escutando a porta 3000 (ou outra porta e defina `SMS_BACKEND_URL`).
-4. No Electron, o botão “Enviar mensagem” chama o backend via o canal seguro `window.loanAPI.sendSms`; o texto é enviado direto ao Twilio, e a UI alerta se houver falha (copiando o texto para envio manual).
+3. O `.env` padrão (`backend/.env.example`) já usa o número `+55 84 99857-1071` como placeholder. Substitua-o pelo seu telefone autorizado antes de iniciar o backend.
+4. Configure `TWILIO_SID`, `TWILIO_TOKEN` e `TWILIO_PHONE` no `.env`, rode `node index.js` e deixe o `backend` escutando a porta 3000 (ou outra porta e defina `SMS_BACKEND_URL`).
+5. No Electron, o botão “Enviar mensagem” chama o backend via o canal seguro `window.loanAPI.sendSms`; o texto é enviado direto ao Twilio, e a UI alerta se houver falha (copiando o texto para envio manual).
 
 **P: Posso usar o app em modo offline?**
 R: Sim, o app funciona completamente offline.
